@@ -1,0 +1,4 @@
+#Para este teste utilizei alguns documentos como base:
+https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
+https://learn.hashicorp.com/tutorials/terraform/azure-build?in=terraform/azure-get-started
+https://www.terraform.io/docs/cli/commands/index.html

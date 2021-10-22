@@ -40,9 +40,7 @@ resource "azurerm_subnet" "interno" {
   virtual_network_name = azurerm_virtual_network.teste-serasa.name
   address_prefixes     = ["10.20.1.0/24"]
 }
-
 #Criando um ip publico
-
 resource "azurerm_public_ip" "example" {
   name                = "Ip_Publico_SeExperian"
   resource_group_name = azurerm_resource_group.teste-serasa.name
@@ -53,3 +51,44 @@ resource "azurerm_public_ip" "example" {
     environment = "Aplicação Go"
   }
 }
+
+#criando uma interface de rede e vinculando a subnet
+
+resource "azurerm_network_interface" "interface-serasa" {
+  name                = "nic-go"
+  location            = azurerm_resource_group.teste-serasa.location
+  resource_group_name = azurerm_resource_group.teste-serasa.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.interno.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = azurerm_public_ip.example.id
+  }
+}
+
+#criando instância
+
+resource "azurerm_linux_virtual_machine" "go-instance" {
+  name                = "App-Go"
+  resource_group_name = azurerm_resource_group.teste-serasa.name
+  location            = azurerm_resource_group.teste-serasa.location
+  size                = "Standard_F2"
+  admin_username      = "adminuser"
+  admin_password      = "batatinhafrita123"
+  network_interface_ids = [
+    azurerm_network_interface.interface-serasa.subnet_id,
+  ]
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "16.04-LTS"
+    version   = "latest"
+  }
+}
+

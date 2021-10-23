@@ -9,3 +9,22 @@ https://docs.microsoft.com/pt-br/rest/api/compute/resource-skus/list
 https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview
 https://docs.microsoft.com/pt-br/cli/azure/install-azure-cli-windows?tabs=azure-cli
 https://docs.microsoft.com/pt-br/cli/azure/vm?view=azure-cli-latest
+
+
+#Pré-requisitos:
+
+1 - Azure CLI - para logar na azure, assim não é necessario colocar a senha no código.(https://docs.microsoft.com/pt-br/cli/azure/install-azure-cli)
+2 - Api do terraform instalado na máquina - para executar os comandos
+3 - Git instalado - para puxar os arquivos do repositório para o diretório local
+
+#Como rodar o main.tf:
+1 - Clone e repositório usando comando gh repo clone GuilhermeNunesLopes/SERASA-EXPERIAN
+2 - Abra a api do terraform, e acesse o diretório onde foi baixado o repositório para rodar via cmd no caso do windows basta inserir o executável no caminho C:\Windows\System32, no linux basta executar os comandos abaixo
+3 - Execute o comando az login no cmd ou no terminal que você havia baixado a API e logue com a sua conta da azure
+4 - Execute o comando 'terraform init' para iniciar a Api do terraform
+5 - Execute o comando 'terraform plan' para ler todo o arquivo main.tf
+6 - Execute o comando 'terraform apply -auto-approve' para começar a criar a infra via terraform
+7 - Valide se os componentes realmente subiram com o 'terraform state list'
+
+#Como desprovisionar a infra
+1 - Para desprovisionar é bem simples basta executar o comando 'terraform destroy'

@@ -69,26 +69,59 @@ resource "azurerm_network_interface" "interface-serasa" {
 
 #criando instância
 
-resource "azurerm_linux_virtual_machine" "go-instance" {
-  name                = "App-Go"
+resource "azurerm_linux_virtual_machine" "instancego" {
+  name                = "App"
   resource_group_name = azurerm_resource_group.teste-serasa.name
   location            = azurerm_resource_group.teste-serasa.location
-  size                = "Standard_F2"
+  #Tier e Tamanho da instancia
+  size                = "Standard_F2" 
   admin_username      = "adminuser"
-  admin_password      = "batatinhafrita123"
-  network_interface_ids = [
-    azurerm_network_interface.interface-serasa.subnet_id,
+  disable_password_authentication = false
+  admin_password = "@SeExperien2021rtgh"
+    network_interface_ids = [
+    azurerm_network_interface.interface-serasa.id,
+    
   ]
+
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
 
+#Imagem da VM - https://docs.microsoft.com/pt-br/azure/virtual-machines/linux/cli-ps-findimage
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    publisher = "OpenLogic"
+    offer     = "CentOS"
+    sku       = "7.5"
     version   = "latest"
+  }
+
+}
+#criando um security group - firewall a nivel de vm
+resource "azurerm_network_security_group" "protege" {
+  name                = "Protege_Teste"
+  location            = azurerm_resource_group.teste-serasa.location
+  resource_group_name = azurerm_resource_group.teste-serasa.name
+
+  security_rule {
+    name                       = "Libera"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  tags = {
+    environment = "Aplicação Go"
   }
 }
 
+#Vinculando um security group a rede
+resource "azurerm_network_interface_security_group_association" "example" {
+  network_interface_id      = azurerm_network_interface.interface-serasa.id
+  network_security_group_id = azurerm_network_security_group.protege.id
+}

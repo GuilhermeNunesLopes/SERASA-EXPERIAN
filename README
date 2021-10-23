@@ -3,3 +3,9 @@ https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 https://learn.hashicorp.com/tutorials/terraform/azure-build?in=terraform/azure-get-started
 https://www.terraform.io/docs/cli/commands/index.html
 https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_machine
+https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule
+https://docs.microsoft.com/pt-br/azure/virtual-machines/linux/cli-ps-findimage
+https://docs.microsoft.com/pt-br/rest/api/compute/resource-skus/list
+https://docs.microsoft.com/en-us/azure/storage/common/storage-account-overview
+https://docs.microsoft.com/pt-br/cli/azure/install-azure-cli-windows?tabs=azure-cli
+https://docs.microsoft.com/pt-br/cli/azure/vm?view=azure-cli-latest

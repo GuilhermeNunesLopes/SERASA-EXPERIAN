@@ -52,7 +52,9 @@ resource "azurerm_public_ip" "public-ip-serasa-teste" {
   location            = azurerm_resource_group.teste-serasa.location
   #Determinando que o tipo de alocação será Estático, ou seja, não irá mudar uma vez provisionado.
   allocation_method   = "Static"
-  #Colocando uma TAG ao ip plublico
+  #Setando o ip como IPV4
+  ip_version = "IPv4"
+   #Colocando uma TAG ao ip plublico
   tags = {
     environment = "IP da Aplicação Go"
   }
@@ -76,7 +78,7 @@ resource "azurerm_network_interface" "interface-serasa-teste" {
     #determinando que o ip privado que a interface ganhará será dinamico, ou seja, será distribuido via DHCP
     private_ip_address_allocation = "Dynamic"
     #vinculando o ip publico a interface de rede
-    public_ip_address_id = azurerm_public_ip.example.id
+    public_ip_address_id = azurerm_public_ip.public-ip-serasa-teste.id
   }
 }
 

@@ -79,7 +79,7 @@ EXPLICANDO CADA UMA DAS PASTAS E ARQUIVOS  #
 ############################################
 Pasta 'Ansible_&_Docker' - nesta pasta temos os arquivos abaixo =
 playbook.yml - arquivo que o ansible irá rodar para logar na maquina na azure, instalar o docker, subir o container e rodar a aplicação
-Dockerfile - como o proprio nome ja diz é o arquivo Docker que esta configurado a imagem do container e a execução do comando para buildar o código da api Gp
+Dockerfile - como o proprio nome ja diz é o arquivo Docker que esta configurado a imagem do container e a execução do comando para buildar o código da api Go
 main.go - é o arquivo da aplicação .Go que iremos fazer o deploy 
 
 Pasta 'Terraform_Code' - nesta pasta temos apenas um arquivo importante=
@@ -95,3 +95,4 @@ Rodei a aplicação main.go tanto na minha máquina local quanto no azure e mesm
 Validações que eu realizei para comprovar que a infra não estava com problema
 Realizei validação de rede na azure, afim de identificar algum bloqueio porém não encontrei nada que pudesse impedir da aplicação rodar na VM
 Realizei o teste de "mesa" da aplicação na minha máquina local para executar o arquivo main.go afim de validar o devido funcionamento e também não obtive sucesso.
+Validei localmente na vm se as portas estavam liberadas e consegui comprovar que estavam

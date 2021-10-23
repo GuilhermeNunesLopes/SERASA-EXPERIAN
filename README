@@ -1,3 +1,7 @@
+##########################################################
+######### INICIO DAS INSTRUÇÕES DO TERRAFORM #############
+##########################################################
+
 #Para este teste utilizei alguns documentos como base:
 https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 https://learn.hashicorp.com/tutorials/terraform/azure-build?in=terraform/azure-get-started
@@ -28,3 +32,66 @@ https://docs.microsoft.com/pt-br/cli/azure/vm?view=azure-cli-latest
 
 #Como desprovisionar a infra
 1 - Para desprovisionar é bem simples basta executar o comando 'terraform destroy'
+
+
+
+#Para sabermos qual ip público foi setado para a nossa instância podemos utilizar o comando via az cli após logarmos na nossa conta azure:
+az network public-ip list | findstr ipAddress
+
+##########################################################
+######### FIM DAS INSTRUÇÕES DO TERRAFORM_CODE ###########
+##########################################################
+
+
+##########################################################
+######### INICIO DAS INSTRUÇÕES DO  ANSIBLE_CODE #########
+##########################################################
+
+#Documentação base:
+
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
+https://docs.docker.com/config/containers/start-containers-automatically/
+https://docs.ansible.com/ansible/latest/user_guide/windows_usage.html
+https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
+
+#Pré-requisitos:
+Ter acesso a uma máquina com o ansible instalado
+
+#É necessario configurarmos o arquivo inventário do ansible com o ip publico da máquina que realizamos o deploy no passo a cima no terraform:
+Caminho esta no '/etc/ansible/hosts' - segue o exemplo do arquivo
+[app]
+xxx.xxx.xxx.xxx
+
+
+#Como utilizaremos o docker e o Ansible estou realizando a instalação via ansible.
+https://docs.docker.com/engine/install/centos/
+
+#Como executar o arquivo do playbook
+1 - Copie todos os arquivos presente no /Ansible_&_Docker para a máquina que esta com o ansible instalado
+2 - rode o comando 'ansible-playbook playbook.yml -k -K' no diretório /Ansible_&_Docker que você copiou . Lembrando que o primeiro -k é para a senha do usuário que irá a acessar a máquina e o -K é para a senha do user root, coloque as senhas na ordem correta para não gerar problemas na execução.
+3 - Acompanhe a execução pelos logs
+
+
+
+
+############################################
+EXPLICANDO CADA UMA DAS PASTAS E ARQUIVOS  #
+############################################
+Pasta 'Ansible_&_Docker' - nesta pasta temos os arquivos abaixo =
+playbook.yml - arquivo que o ansible irá rodar para logar na maquina na azure, instalar o docker, subir o container e rodar a aplicação
+Dockerfile - como o proprio nome ja diz é o arquivo Docker que esta configurado a imagem do container e a execução do comando para buildar o código da api Gp
+main.go - é o arquivo da aplicação .Go que iremos fazer o deploy 
+
+Pasta 'Terraform_Code' - nesta pasta temos apenas um arquivo importante=
+main.tf - é o arquivo com a extensão do terraform que tem o papel mais importante, sendo o grande responsável por subir toda a estrutura na azure que possibilita fazer o deploy da aplicação.
+
+
+###########################################
+############OBSERVAÇÃO#####################
+###########################################
+
+Rodei a aplicação main.go tanto na minha máquina local quanto no azure e mesmo assim o App não abre.
+
+Validações que eu realizei para comprovar que a infra não estava com problema
+Realizei validação de rede na azure, afim de identificar algum bloqueio porém não encontrei nada que pudesse impedir da aplicação rodar na VM
+Realizei o teste de "mesa" da aplicação na minha máquina local para executar o arquivo main.go afim de validar o devido funcionamento e também não obtive sucesso.

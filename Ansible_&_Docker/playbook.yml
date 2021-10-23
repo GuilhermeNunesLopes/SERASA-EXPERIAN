@@ -1,0 +1,77 @@
+---
+# Dando um nome para a primeira execução do ansible
+- name: INICIO DO PROJETO 
+# Informando qual grupo de host que o ansible deve acessar, lembrando que isso pode ser setado no arquivo inventario.yml ou no /etc/ansible/hosts
+  hosts: app
+# Setando qual usuário que irá logar via ssh quando playbook estiver rodando
+  remote_user: adminuser
+# informando que após ele logar o usuário irá subir os privilégios para root
+  become: yes
+#iniciando a execução de tarefas 
+  tasks:
+  #dando um nome para a tarefa 
+    - name: INSTALANDO YUM UTILS
+    #executando o comando yum para instalar o yum-utils na ultima versão
+      ansible.builtin.yum:
+        name: yum-utils
+        state: latest
+     #executando uma outra tarefa agora configurando o repositório do docker oficial   
+    - name: Configurando o repositório do doker
+      command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    # baixando as APIs do docker via yum
+    - name: INSTALANDO DOCKER [PART1]
+      ansible.builtin.yum:
+        name: docker-ce
+        state: latest
+    # baixando as APIs do docker
+    - name: INSTALANDO DOCKER [PART2]
+      ansible.builtin.yum:
+        name: docker-ce-cli
+        state: latest
+    # baixando as APIs do docker
+    - name: INSTALANDO DOCKER [PART3]
+      ansible.builtin.yum:
+        name: containerd.io
+        state: latest
+    # Executando o comando para iniciar o serviço do docker na VM
+    - name: Startando o docker
+      command: systemctl start docker
+    # Configurando o serviço do docker para iniciar junto com o sistema operacional
+    - name: Tornando o docker inicializado junto com a vm
+      command: chkconfig docker on  
+    # Copiando o arquivo Go para a VM
+    - name: Copiando o arquivo Go para maquina Destino
+      copy:
+        src: main.go
+        dest: /home/adminuser/main.go
+    # Copiando o arquivo Dockerfile para a VM
+    - name: Copiando o arquivo Dockerfile para o destino
+      copy:
+        src: Dockerfile
+        dest: /home/adminuser/Dockerfile 
+    # Acessando a pasta onde foi copiado os arquivos Dockerfile e o arquivo da aplicação Go
+    - name: Entrando no diretório home do usuário
+      command: cd /home/adminuser 
+    # Executando o dockerbuild para subir subir uma imagem com base no arquivo DockerFile
+    - name: Executando o Docker build
+      command: docker build -t serasa-teste/appgo:v1 .
+    # Executando o docker run para subir um container com base na imagem gerada pelo DockerFile
+    - name: Executando o Docker run
+      command: docker run -itd --name appgo --restart always -p 8080:8080 serasa-teste/appgo:v1  
+
+
+
+
+
+
+
+
+
+
+    
+ 
+
+
+
+
+

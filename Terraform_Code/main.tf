@@ -83,7 +83,7 @@ resource "azurerm_network_interface" "interface-serasa-teste" {
 }
 
 #criando um security group - firewall a nivel de vm
-resource "azurerm_network_security_group" "protege" {
+resource "azurerm_network_security_group" "NSG" {
   name                = "Protege_Teste"
   location            = azurerm_resource_group.teste-serasa.location
   resource_group_name = azurerm_resource_group.teste-serasa.name
@@ -106,14 +106,14 @@ resource "azurerm_network_security_group" "protege" {
 }
 
 #Vinculando um security group a interface de rede.
-resource "azurerm_network_interface_security_group_association" "example" {
+resource "azurerm_network_interface_security_group_association" "SG_A" {
   network_interface_id      = azurerm_network_interface.interface-serasa-teste.id
-  network_security_group_id = azurerm_network_security_group.protege.id
+  network_security_group_id = azurerm_network_security_group.NSG.id
 }
 
 
 #criando instância
-resource "azurerm_linux_virtual_machine" "instancego" {
+resource "azurerm_linux_virtual_machine" "instance-go" {
   #Nomeando a instância
   name                = "App"
   #vinculando um resource group e uma região a VM 

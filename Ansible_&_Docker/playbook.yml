@@ -44,7 +44,7 @@
       copy:
         src: main.go
         dest: /home/adminuser/main.go
-    # Copiando o arquivo Dockerfile para a VM
+    # Copiando o arquivo Dockerfile para a VM na azure
     - name: Copiando o arquivo Dockerfile para o destino
       copy:
         src: Dockerfile

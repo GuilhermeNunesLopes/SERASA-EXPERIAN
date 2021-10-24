@@ -21,14 +21,18 @@ https://docs.microsoft.com/pt-br/cli/azure/vm?view=azure-cli-latest
 2 - Api do terraform instalado na máquina - para executar os comandos
 3 - Git instalado - para puxar os arquivos do repositório para o diretório local
 
-#Como rodar o main.tf:
+#(Se é a sua primeira vez executando )
+#Como clonar o repositório do código e inserir o terraform no path do windows:
 1 - Clone e repositório usando comando gh repo clone GuilhermeNunesLopes/SERASA-EXPERIAN
 2 - Abra a api do terraform, e acesse o diretório onde foi baixado o repositório para rodar via cmd no caso do windows basta inserir o executável no caminho C:\Windows\System32, no linux basta executar os comandos abaixo
-3 - Execute o comando az login no cmd ou no terminal que você havia baixado a API e logue com a sua conta da azure
-4 - Execute o comando 'terraform init' para iniciar a Api do terraform
-5 - Execute o comando 'terraform plan' para ler todo o arquivo main.tf
-6 - Execute o comando 'terraform apply -auto-approve' para começar a criar a infra via terraform
-7 - Valide se os componentes realmente subiram com o 'terraform state list'
+
+#(Se já executou alguma vez, ou já tem o que precisa)
+#Se ja estiver com o código clonada na máquina local e com o terraform instalado realize os procedimentos abaixo, vale lembrar que é importante estar dentro da pasta Terraform_Code:
+1 - Execute o comando 'az login' no, cmd ou no terminal que você havia baixado a API e logue com a sua conta da azure
+2 - Execute o comando 'terraform init' para iniciar a Api do terraform
+3 - Execute o comando 'terraform plan' para ler todo o arquivo main.tf
+4 - Execute o comando 'terraform apply --auto-approve' para começar a criar a infra via terraform
+5 - Valide se os componentes realmente subiram com o 'terraform state list'
 
 #Como desprovisionar a infra
 1 - Para desprovisionar é bem simples basta executar o comando 'terraform destroy'
@@ -36,7 +40,7 @@ https://docs.microsoft.com/pt-br/cli/azure/vm?view=azure-cli-latest
 
 
 #Para sabermos qual ip público foi setado para a nossa instância podemos utilizar o comando via az cli após logarmos na nossa conta azure:
-az network public-ip list | findstr ipAddress
+'az network public-ip list | findstr ipAddress'
 
 ##########################################################
 ######### FIM DAS INSTRUÇÕES DO TERRAFORM_CODE ###########
@@ -57,19 +61,24 @@ https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html
 #Pré-requisitos:
 Ter acesso a uma máquina com o ansible instalado
 
-#É necessario configurarmos o arquivo inventário do ansible com o ip publico da máquina que realizamos o deploy no passo a cima no terraform:
-Caminho esta no '/etc/ansible/hosts' - segue o exemplo do arquivo
+
+#É necessario configurarmos o arquivo inventário/host do ansible com o ip publico da máquina que realizamos o deploy no passo a cima no terraform:
+Estando dentro da máquina onde roda o ansible devemos entrar no diretório '/etc/ansible/hosts' - e inserir uma nova linha seguindo o exemplo, sendo que xxx.xxx.xxx é o ip da sua máquina da Azure
 [app]
 xxx.xxx.xxx.xxx
 
 
-#Como utilizaremos o docker e o Ansible estou realizando a instalação via ansible.
+#Como utilizaremos o docker estou realizando a instalação via ansible.Segue abaixo um documento de apoio para instalar em uma VM CentOS:
 https://docs.docker.com/engine/install/centos/
 
 #Como executar o arquivo do playbook
 1 - Copie todos os arquivos presente no /Ansible_&_Docker para a máquina que esta com o ansible instalado
-2 - rode o comando 'ansible-playbook playbook.yml -k -K' no diretório /Ansible_&_Docker que você copiou . Lembrando que o primeiro -k é para a senha do usuário que irá a acessar a máquina e o -K é para a senha do user root, coloque as senhas na ordem correta para não gerar problemas na execução.
-3 - Acompanhe a execução pelos logs
+2 - Acesse o caminho /etc/ansible/ansible.cfg e edite o arquivo descomentando a linha 'host_key_checking = False'
+3 - Rode o comando 'ansible-playbook playbook.yml -k -K' no diretório /Ansible_&_Docker que você copiou . /
+Lembrando que o primeiro -k é para a senha do usuário(presente no arquivo main.tf) que irá a acessar a máquina e o -K é /
+para a senha do user root(mesma senha do arquivo main.tf), /
+coloque as senhas na ordem correta para não gerar problemas na execução.
+4 - Acompanhe a execução pelos logs
 
 
 
@@ -92,7 +101,7 @@ main.tf - é o arquivo com a extensão do terraform que tem o papel mais importa
 
 Rodei a aplicação main.go tanto na minha máquina local quanto no azure e mesmo assim o App não abre.
 
-Validações que eu realizei para comprovar que a infra não estava com problema
+Validações que eu realizei para comprovar que a infra não estava com problema:
 Realizei validação de rede na azure, afim de identificar algum bloqueio porém não encontrei nada que pudesse impedir da aplicação rodar na VM
-Realizei o teste de "mesa" da aplicação na minha máquina local para executar o arquivo main.go afim de validar o devido funcionamento e também não obtive sucesso.
+Realizei o teste local da aplicação na minha máquina para executar o arquivo main.go afim de validar o devido funcionamento e também não obtive sucesso.
 Validei localmente na vm se as portas estavam liberadas e consegui comprovar que estavam

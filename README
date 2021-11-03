@@ -95,13 +95,3 @@ Pasta 'Terraform_Code' - nesta pasta temos apenas um arquivo importante=
 main.tf - é o arquivo com a extensão do terraform que tem o papel mais importante, sendo o grande responsável por subir toda a estrutura na azure que possibilita fazer o deploy da aplicação.
 
 
-###########################################
-############OBSERVAÇÃO#####################
-###########################################
-
-Rodei a aplicação main.go tanto na minha máquina local quanto no azure e mesmo assim o App não abre.
-
-Validações que eu realizei para comprovar que a infra não estava com problema:
-Realizei validação de rede na azure, afim de identificar algum bloqueio porém não encontrei nada que pudesse impedir da aplicação rodar na VM
-Realizei o teste local da aplicação na minha máquina para executar o arquivo main.go afim de validar o devido funcionamento e também não obtive sucesso.
-Validei localmente na vm se as portas estavam liberadas e consegui comprovar que estavam
